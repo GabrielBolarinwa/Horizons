@@ -8,6 +8,7 @@
       :navigation="{ prevEl: '.prevSlide', nextEl: '.nextSlide' }"
       :pagination="{ clickable: true }"
       :a11y="true"
+      :autoplay="{ delay: 2500, disableOnInteraction: false }"
     >
       <SwiperSlide v-for="hour in weatherData">
         <div class="forecast_card">
@@ -75,9 +76,9 @@ import "swiper/css";
 import "swiper/css/a11y";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { A11y, Navigation, Pagination } from "swiper/modules";
+import { A11y, Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/vue";
-const modules = [Navigation, Pagination, A11y];
+const modules = [Navigation, Pagination, A11y, Autoplay];
 const { weatherData: fullWeather } = storeToRefs(useWeatherStore());
 const { temperatureUnit } = storeToRefs(useAppStore());
 const weatherData = fullWeather.value?.forecast.forecastday[0]?.hour;
