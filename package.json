@@ -16,6 +16,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@lucide/vue": "^1.17.0",
+    "@sentry/vue": "^10.56.0",
     "pinia": "^3.0.4",
     "pinia-plugin-persistence": "^0.0.2",
     "swiper": "^12.2.0",
