@@ -1,0 +1,204 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: 0.5s;
+  transition-property: color, background, transform, opacity, visibility;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #f1f5f9;
+    --card-bg: #ffffff;
+    --card-bg-2: #dbeafe;
+    --card-bg-3: #f0f4ff;
+    --primary: #0f172a;
+    --secondary: #475569;
+    --muted: #64748b;
+    --meta: #64748b;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --btn-bg: #eff6ff;
+    --btn-border: #3b82f6;
+    --input-bg: #ffffff;
+    --input-border: #cbd5e1;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0d14;
+    --card-bg: #111827;
+    --card-bg-2: #1a2744;
+    --card-bg-3: #1c2333;
+    --primary: #ffffff;
+    --secondary: #94a3b8;
+    --muted: #64748b;
+    --meta: #94a3b8;
+    --accent: #3b72f6;
+    --accent-hover: #2563eb;
+    --btn-bg: #1e293b;
+    --btn-border: #3b82f6;
+    --input-bg: #1c2333;
+    --input-border: #2d3748;
+  }
+}
+
+:root {
+  --text-hero: clamp(2rem, 1.5rem + 2vw, 3rem);
+  --text-2xl: clamp(1.25rem, 1rem + 0.5vw, 1.5rem);
+  --text-xl: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.25vw, 1.25rem);
+  --text-base: clamp(1rem, 1rem + 0vw, 1rem);
+  --text-sm: clamp(0.875rem, 0.875rem + 0.25vw, 1rem);
+  --text-xs: clamp(0.75rem, 0.75rem + 0.2vw, 0.875rem);
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.08em;
+  --tracking-btn: 0.01em;
+  --leading-none: 1;
+  --leading-tight: 1.2;
+  --leading-normal: 1.4;
+  --leading-relaxed: 1.5;
+  --font-display: "Nunito", sans-serif;
+  --font-ui: "Nunito Sans", sans-serif;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --radius-pill: 9999px;
+  --radius-card: 20px;
+  --radius-section: 16px;
+  --radius-chip: 12px;
+  --radius-input: 12px;
+  --radius-btn: 10px;
+  --radius-circle: 50%;
+  --height-header: 56px;
+  --height-input: 44px;
+  --height-btn-pill: 36px;
+}
+
+[data-theme="light"] {
+  --background: #f1f5f9;
+  --card-bg: #ffffff;
+  --card-bg-2: #dbeafe;
+  --card-bg-3: #f0f4ff;
+  --primary: #0f172a;
+  --secondary: #475569;
+  --muted: #64748b;
+  --meta: #64748b;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --btn-bg: #eff6ff;
+  --btn-border: #3b82f6;
+  --input-bg: #ffffff;
+  --input-border: #cbd5e1;
+}
+
+[data-theme="dark"] {
+  --background: #0a0d14;
+  --card-bg: #111827;
+  --card-bg-2: #1a2744;
+  --card-bg-3: #1c2333;
+  --primary: #ffffff;
+  --secondary: #94a3b8;
+  --muted: #64748b;
+  --meta: #94a3b8;
+  --accent: #3b72f6;
+  --accent-hover: #2563eb;
+  --btn-bg: #1e293b;
+  --btn-border: #3b82f6;
+  --input-bg: #1c2333;
+  --input-border: #2d3748;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--background) center/cover fixed no-repeat;
+  color: var(--primary);
+  min-height: 100dvh;
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  width: 100%;
+  position: relative;
+  font-weight: 400;
+}
+
+:focus {
+  border: 1px solid var(--accent);
+  outline: 1px solid var(--accent);
+  box-shadow: 0 0px 10px 2px var(--accent);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  font-size: inherit;
+  transform: scale(1);
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  color: inherit;
+  cursor: pointer;
+  &:hover {
+    background: var(--btn-border);
+  }
+}
+
+button:active {
+  transform: scale(0.96);
+  transition: 0.25s linear;
+}
+
+input,
+textarea {
+  font: inherit;
+}
+
+/*Reset End*/
+
+/*Utility Classes*/
+.offscreen {
+  position: absolute !important;
+  width: 1px !important;
+  margin: -1px !important;
+  height: 1px !important;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* End Utitlity Classes */
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: min(100%, 720px);
+  margin-inline: auto;
+  padding: var(--space-8) var(--space-4);
+}
+
+main article {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.container article > * {
+  margin-bottom: var(--space-6);
+}
