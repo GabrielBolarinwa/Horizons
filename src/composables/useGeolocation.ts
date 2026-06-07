@@ -1,27 +1,18 @@
-import { useWeatherStore } from "@/stores/weather";
+import { toast } from "vue-sonner";
 
 export async function useCurrentLocation() {
-  const weatherStore = useWeatherStore();
-  if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(
-      (position) =>
-        weatherStore.setLocationData({
-          accuracy: position.coords.accuracy,
-          location: `${position.coords.latitude} ${position.coords.longitude}`,
-        }),
-      () => {
-        weatherStore.setError(
-          "Failed to get location please move to a better location or check your settings",
+  return new Promise((resolve, reject) => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => resolve(position),
+        (error) => reject(error),
+      );
+    } else {
+      reject(() => {
+        toast.error(
+          "Your browser does not support location services, please update your browser or check your phone's location settings",
         );
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-      },
-    );
-  } else {
-    weatherStore.setError(
-      "Your browser does not support location services, please update your browser or check your phone's location settings",
-    );
-  }
+      });
+    }
+  });
 }

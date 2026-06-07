@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import Error from "@/components/ErrorDisplay.vue";
 import Header from "@/components/Header.vue";
 import Loader from "@/components/Loader.vue";
 import Weather from "@/components/Weather.vue";
 import { watch } from "vue";
+import { Toaster } from "vue-sonner";
+import "vue-sonner/style.css";
 import WeatherForm from "./components/WeatherForm.vue";
 import { useAppStore } from "./stores/app.ts";
 import { useWeatherStore } from "./stores/weather.ts";
@@ -23,9 +24,14 @@ watch(
     <Header />
     <WeatherForm />
     <article class="resultDisplay">
-      <Loader v-if="weatherStore.loading && !weatherStore.error" />
-      <Error v-if="weatherStore.error.length > 0" />
+      <Loader v-if="weatherStore.loading" />
       <Weather v-else-if="weatherStore.weatherData" />
     </article>
   </main>
+  <Toaster
+    position="bottom-right"
+    :theme="appStore.theme"
+    :richColors="true"
+    expand
+  />
 </template>

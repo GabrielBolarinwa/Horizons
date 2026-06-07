@@ -3,20 +3,12 @@ import { useCurrentLocation } from "@/composables/useGeolocation";
 import type { ApiErrorResponse, WeatherAPIResponse } from "@/types";
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { toast } from "vue-sonner";
 
 export const useWeatherStore = defineStore("WeatherStore", () => {
   const weatherData = ref<WeatherAPIResponse | undefined>(undefined);
   const loading = ref<boolean>(false);
-  const error = ref<string>("");
-  const locationData = ref<
-    | {
-        location: string;
-        accuracy: number;
-      }
-    | undefined
-  >(undefined);
   async function getCityWeatherData(location: string) {
-    error.value = "";
     loading.value = true;
     let timeout = 10000;
     try {
@@ -25,79 +17,83 @@ export const useWeatherStore = defineStore("WeatherStore", () => {
         const errorResponse =
           (await weatherResponse.json()) as ApiErrorResponse;
         if (errorResponse.error.code === 1003) {
-          error.value = "Please enter a city";
+          toast.error("Please enter a city");
         } else if (errorResponse.error.code === 1006) {
-          error.value =
-            "The location you entered was not found, please try a different location";
+          toast.error(
+            "The location you entered was not found, please try a different location",
+          );
         } else if (errorResponse.error.code === 9999) {
-          error.value = "Internal application error";
+          toast.error("Internal application error");
         }
         console.log(errorResponse.error.message);
         return;
       }
       weatherData.value = (await weatherResponse.json()) as WeatherAPIResponse;
     } catch (err) {
+      if ((err as unknown as any).name === "AbortError") {
+        loading.value = false;
+        timeout += 1000;
+        return;
+      }
       console.error(err);
-      error.value =
-        "Failed to get weather data, please check your location and try again";
+      toast.error(
+        "Failed to get weather data, please check your internet and try again",
+      );
+      throw err;
     }
     loading.value = false;
     timeout += 1000;
   }
   async function getCurrLocationWeather() {
-    error.value = "";
-
     loading.value = true;
-    let timeout = 10000;
-    let weatherResponse;
-    await useCurrentLocation();
-    if (locationData.value?.location) {
-      try {
-        weatherResponse = await useFetchWeather(
-          locationData.value.location.trim(),
-          timeout,
+    try {
+      const position = (await useCurrentLocation()) as GeolocationPosition;
+
+      if (position.coords.accuracy > 500) {
+        toast.warning(
+          "Location accuracy is low, consider using the search for precise location",
         );
+      }
+
+      let timeout = 10000;
+
+      timeout += 1000;
+      const location = `${position.coords.latitude} ${position.coords.longitude}`;
+      try {
+        const weatherResponse = await useFetchWeather(location.trim(), timeout);
+
         if (weatherResponse.status === 400) {
           const errorResponse =
             (await weatherResponse.json()) as ApiErrorResponse;
           if (errorResponse.error.code === 1003) {
-            error.value = "Please enter a city";
+            toast.error("Please enter a city");
           } else if (errorResponse.error.code === 1006) {
-            error.value =
-              "The location you entered was not found, please try a different location";
+            toast.error(
+              "The location you entered was not found, please try a different location",
+            );
           } else if (errorResponse.error.code === 9999) {
-            error.value = "Internal application error";
+            toast.error("Internal application error");
           }
-          console.log(errorResponse.error.message);
+          console.error(errorResponse.error.message);
           return;
+        } else if (weatherResponse.ok) {
+          weatherData.value =
+            (await weatherResponse.json()) as WeatherAPIResponse;
         }
-        weatherData.value =
-          (await weatherResponse.json()) as WeatherAPIResponse;
       } catch (err) {
         console.error(err);
-        error.value =
-          "Failed to get weather data, please check your network connection and try again";
+        toast.error(
+          "Failed to get weather data, please check your network connection and try again",
+        );
       }
+    } catch (error) {
+      console.error(error);
     }
     loading.value = false;
-    timeout += 1000;
   }
-  function setError(errorString: string) {
-    error.value = errorString;
-  }
-  function setLocationData(locationResponse: {
-    accuracy: number;
-    location: string;
-  }) {
-    locationData.value = locationResponse;
-  }
-
   return {
-    error,
     loading,
     weatherData,
-    setError,
-    setLocationData,
     getCityWeatherData,
     getCurrLocationWeather,
   };

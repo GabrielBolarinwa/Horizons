@@ -8,7 +8,7 @@
       :navigation="{ prevEl: '.prevSlide', nextEl: '.nextSlide' }"
       :pagination="{ clickable: true }"
       :a11y="true"
-      :autoplay="{ delay: 2500, disableOnInteraction: false }"
+      :autoplay="{ delay: 5000, disableOnInteraction: false }"
     >
       <SwiperSlide v-for="hour in weatherData">
         <div class="forecast_card">

@@ -62,6 +62,22 @@ form.main_form {
   border-radius: var(--radius-section);
   .input-box {
     grid-column: 1 / 6;
+    position: relative;
+    &::after {
+      position: absolute;
+      content: "";
+      display: block;
+      background: var(--accent);
+      width: 90%;
+      height: 2px;
+      bottom: 3px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      transition: transform 0.5s;
+    }
+    &:focus-within::after {
+      transform: translateX(-50%) scaleX(1);
+    }
     .form_input {
       font-size: var(--text-sm);
       font-weight: normal;

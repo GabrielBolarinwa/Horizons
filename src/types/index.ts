@@ -1,4 +1,4 @@
-export type theme = "light" | "dark" | "auto";
+export type theme = "light" | "dark" | "system";
 export type temperatureUnit = "celsius" | "fahrenheit";
 interface WeatherCondition {
   text: string;
