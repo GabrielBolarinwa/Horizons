@@ -86,8 +86,22 @@ export const useWeatherStore = defineStore("WeatherStore", () => {
           "Failed to get weather data, please check your network connection and try again",
         );
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      const error = err as unknown as GeolocationPositionError;
+      if (error.code === 1) {
+        toast.error(
+          "Location permission denied, please allow location info usage or check your location services settings",
+        );
+      } else if (error.code === 2) {
+        toast.error(
+          "Could not determine your location, please check again later",
+        );
+      } else if (error.code === 3) {
+        toast.error(
+          "Location request timeout, please move to a better location for better GPS position or better connectivity",
+        );
+      }
+      console.error(error.message);
     }
     loading.value = false;
   }
