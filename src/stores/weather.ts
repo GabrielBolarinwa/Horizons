@@ -25,7 +25,6 @@ export const useWeatherStore = defineStore("WeatherStore", () => {
         } else if (errorResponse.error.code === 9999) {
           toast.error("Internal application error");
         }
-        console.log(errorResponse.error.message);
         return;
       }
       weatherData.value = (await weatherResponse.json()) as WeatherAPIResponse;
