@@ -48,7 +48,7 @@ export const useWeatherStore = defineStore("WeatherStore", () => {
     loading.value = true;
     try {
       const position = (await useCurrentLocation()) as GeolocationPosition;
-
+      if(!position) return;
       if (position.coords.accuracy > 500) {
         toast.warning(
           "Location accuracy is low, consider using the search for precise location",
